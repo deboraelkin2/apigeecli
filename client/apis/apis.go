@@ -255,14 +255,18 @@ func CleanProxy(name string, reportOnly bool, keepList []string) (err error) {
 
 		//the user passed a list of revisions, check if the revision should be preserved
 		deleteRevision := keepRevision(proxyRevision, keepList)
+		fmt.Println("Proxy revision = " + proxyRevision + " - deleteRevision = " + strconv.FormatBool(deleteRevision))
 
 		if !isRevisionDeployed(deployedRevisions, proxyRevision) {
 			//step 3. clean up proxy revisions that are not deployed
+			fmt.Println("- Revision is not deployed")
 			if reportOnly {
+				fmt.Println("-- In reportOnly")
 				if !reportRevisions[proxyRevision] && deleteRevision {
 					reportRevisions[proxyRevision] = true
 				}
 			} else {
+				fmt.Println("-- In else reportOnly")
 				if deleteRevision {
 					if revision, err = strconv.Atoi(proxyRevision); err != nil {
 						return err
